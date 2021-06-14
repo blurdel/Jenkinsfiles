@@ -6,9 +6,9 @@ pipeline {
         USER_CREDS = credentials('juser-creds')
     }
     parameters {
-         string(name: 'PARAM1', defaultValue: '', description: 'Description of param1 param')
-         choice(name: 'VERSION', choices: ['1.1.0', '1.2.0', '1.3.0'], description: 'Description of choice param')
-         booleanParam(name: 'runTests', defaultValue: true, description: 'Description of boolean param')
+         string(name: 'param1', defaultValue: '', description: 'Enter any value for param1')
+         choice(name: 'version', choices: ['1.1.0', '1.2.0', '1.3.0'], description: 'Select the version for this build')
+         booleanParam(name: 'Run_Unit_Tests', defaultValue: true, description: 'Do you want to run Unit Tests?')
     }
     tools {
 		maven 'mvn'
@@ -19,8 +19,9 @@ pipeline {
         stage("Init") {
             steps {
                 echo "Running: Init"
-		sh 'java -version'
-		sh 'mvn --version'
+                echo "${params.param1} ${params.version} ${params.Run_Unit_Tests}"
+                sh 'java -version'
+                sh 'mvn --version'
             }
         }
         stage("Build") {
@@ -33,13 +34,13 @@ pipeline {
             steps {
                 echo "Running: Build"
                 echo "Using some static version ${SOME_STATIC_VERSION}"
-                echo "Using PARAM1 = ${params.PARAM1}"
+                echo "Using param1 = ${params.param1}"
             }
         }
         stage("Test") {
             when {
                 expression {
-                    params.runTests == true
+                    params.Run_Unit_Tests == true
                 }
             }
             steps {
@@ -54,7 +55,7 @@ pipeline {
         stage("Deploy") {
             steps {
                 echo "Running: Deploy"
-                echo "Deploying version: ${params.VERSION}"
+                echo "Deploying version: ${params.version}"
 
                 echo "creds: ${USER_CREDS}"
                 withCredentials ([
