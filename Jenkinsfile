@@ -55,7 +55,7 @@ pipeline {
                     usernamePassword(credentialsId: 'juser-creds', usernameVariable: 'USER', passwordVariable: 'PASS')
                 ]) {
                     sh 'echo creds: ${USER} ${PASS}'
-                    sh('curl -u $USER_CREDS_USR:$USER_CREDS_PSW https://localhost:8080/test')
+                    sh('curl -u $USER_CREDS_USR:$USER_CREDS_PSW http://localhost:8080/hello')
                 }
             }
         }
