@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         SOME_VERSION = "1.1.0"
-        SERVER_CREDENTIALS = credentials('juser-creds')
+        USER_CREDS = credentials('juser-creds')
     }
     parameters {
          string(name: 'PARAM1', defaultValue: '', description: 'Description of param1 param')
@@ -26,7 +26,8 @@ pipeline {
         stage("Build") {
             when {
                 expression {
-                    env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'main'
+                    // env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'main'
+                    env.BRANCH_NAME == 'nana-demo'
                 }
             }
             steps {
@@ -49,11 +50,12 @@ pipeline {
                 echo "Running: Deploy"
                 echo "Deploying version: ${params.VERSION}"
 
-                echo "creds: ${SERVER_CREDENTIALS}"
+                echo "creds: ${USER_CREDS}"
                 withCredentials ([
                     usernamePassword(credentials: 'juser-creds', usernameVariable: USER, passwordVariable: PWD)
                 ]) {
-                    echo "creds: ${USER} ${PWD}"
+                    // echo "creds: ${USER} ${PWD}"
+                    sh('curl -u $USER_CREDS_USR:$USER_CREDS_PSW https://localhost:8080/test')
                 }
             }
         }
