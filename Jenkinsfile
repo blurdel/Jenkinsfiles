@@ -2,13 +2,13 @@ pipeline {
     agent any
     
     environment {
-        SOME_VERSION = "1.1.0"
+        SOME_STATIC_VERSION = "0.0.1"
         USER_CREDS = credentials('juser-creds')
     }
     parameters {
          string(name: 'PARAM1', defaultValue: '', description: 'Description of param1 param')
          choice(name: 'VERSION', choices: ['1.1.0', '1.2.0', '1.3.0'], description: 'Description of choice param')
-         booleanParam(name: 'runTests', defaultValue: false, description: 'Description of boolean param')
+         booleanParam(name: 'runTests', defaultValue: true, description: 'Description of boolean param')
     }
     tools {
 		maven 'mvn'
@@ -32,7 +32,7 @@ pipeline {
             }
             steps {
                 echo "Running: Build"
-                echo "Building version ${SOME_VERSION}" 
+                echo "Using some static version ${SOME_STATIC_VERSION}" 
             }
         }
         stage("Test") {
@@ -52,9 +52,9 @@ pipeline {
 
                 echo "creds: ${USER_CREDS}"
                 withCredentials ([
-                    usernamePassword(credentials: 'juser-creds', usernameVariable: USER, passwordVariable: PWD)
+                    usernamePassword(credentialsId: 'juser-creds', usernameVariable: 'USER', passwordVariable: 'PASS')
                 ]) {
-                    // echo "creds: ${USER} ${PWD}"
+                    sh 'echo creds: ${USER} ${PASS}'
                     sh('curl -u $USER_CREDS_USR:$USER_CREDS_PSW https://localhost:8080/test')
                 }
             }
