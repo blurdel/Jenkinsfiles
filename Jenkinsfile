@@ -1,13 +1,16 @@
 pipeline {
-    
-    agent { docker { image 'maven:3.3.3' } }
-    
+    environment {
+        // Set parameters for jobs
+        test = "groovy"
+    }
+    agent {
+        label $testbed
+    }
     stages {
-        stage('log version info') {
+        stage ("Stage 1") {
             steps {
-                sh 'mvn --version'
+                echo "$test"
             }
         }
     }
-    
 }
