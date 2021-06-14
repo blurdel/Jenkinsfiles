@@ -2,6 +2,7 @@ pipeline {
     environment {
         // Set parameters for jobs
         test = "groovy"
+        testbed = "my testbed"
     }
     agent {
         label $testbed
