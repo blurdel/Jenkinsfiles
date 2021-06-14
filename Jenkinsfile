@@ -19,7 +19,8 @@ pipeline {
         stage("Init") {
             steps {
                 echo "Running: Init"
-                sh 'mvn --version'
+		sh 'java -version'
+		sh 'mvn --version'
             }
         }
         stage("Build") {
