@@ -27,8 +27,7 @@ pipeline {
         stage("Build") {
             when {
                 expression {
-                    // env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'main'
-                    env.BRANCH_NAME == 'nana-demo'
+                    env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'main'
                 }
             }
             options {
