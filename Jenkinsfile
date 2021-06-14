@@ -32,7 +32,8 @@ pipeline {
             }
             steps {
                 echo "Running: Build"
-                echo "Using some static version ${SOME_STATIC_VERSION}" 
+                echo "Using some static version ${SOME_STATIC_VERSION}"
+                echo "Using PARAM1 = ${params.PARAM1}"
             }
         }
         stage("Test") {
@@ -43,6 +44,11 @@ pipeline {
             }
             steps {
                 echo "Running: Test"
+                /* `make check` returns non-zero on test failures,
+                * using `true` to allow the Pipeline to continue nonetheless
+                */
+                sh 'make check || true' 
+                // junit '**/target/*.xml'
             }
         }
         stage("Deploy") {
@@ -57,6 +63,7 @@ pipeline {
                     sh 'echo creds: ${USER} ${PASS}'
                     sh('curl -u $USER_CREDS_USR:$USER_CREDS_PSW http://localhost:8080/hello')
                 }
+                // sh 'make publish'
             }
         }
 
