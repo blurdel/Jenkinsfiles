@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent none
     
     environment {
         SOME_STATIC_VERSION = "0.0.1"
@@ -17,6 +17,7 @@ pipeline {
     stages {
 
         stage("Init") {
+            agent any
             steps {
                 echo "Stage: Init"
                 echo "branch=${env.BRANCH_NAME}, param1=${params.param1}, version=${params.version}, unitTests=${params.unitTests}"
@@ -25,6 +26,7 @@ pipeline {
             }
         }
         stage("Build") {
+            agent { label 'Linux' }
             when {
                 expression {
                     env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'main'
@@ -41,6 +43,7 @@ pipeline {
             }
         }
         stage("Test") {
+            agent { label 'Linux' }
             when {
                 expression {
                     params.unitTests == true
@@ -56,6 +59,7 @@ pipeline {
             }
         }
         stage("Test Manager") {
+            agent any
             options {
                 timeout(time: 2, unit: 'MINUTES')
             }
@@ -65,6 +69,7 @@ pipeline {
             }
         }
         stage("Deploy") {
+            agent any
             steps {
                 echo "Stage: Deploy"
                 echo "Deploying version: ${params.version}"
@@ -80,6 +85,7 @@ pipeline {
             }
         }
         stage("Cleanup") {
+            agent any
             steps {
                 echo "Stage: Cleanup"
                 deleteDir()
