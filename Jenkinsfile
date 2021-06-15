@@ -26,7 +26,7 @@ pipeline {
             }
         }
         stage("Build") {
-            agent { label 'Linux' }
+            agent { label 'linux' }
             when {
                 expression {
                     env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'main'
