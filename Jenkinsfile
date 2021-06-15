@@ -37,6 +37,7 @@ pipeline {
                 echo "Stage: Build"
                 echo "Using some static version ${SOME_STATIC_VERSION}"
                 echo "Using param1 = ${params.param1}"
+		sh 'mvn clean verify -DskipTests'
             }
         }
         stage("Test") {
@@ -51,7 +52,7 @@ pipeline {
                 * using `true` to allow the Pipeline to continue nonetheless
                 */
                 sh 'mvn test || true' 
-                junit(allowEmptyResults: true, testResults: '**/target/*.xml')
+                junit(allowEmptyResults: false, testResults: '**/target/*.xml')
             }
         }
         stage("Test Manager") {
