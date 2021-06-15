@@ -18,7 +18,7 @@ pipeline {
 
         stage("Init") {
             steps {
-                echo "Running: Init"
+                echo "Stage: Init"
                 echo "branch=${env.BRANCH_NAME}, param1=${params.param1}, version=${params.version}, unitTests=${params.unitTests}"
                 sh 'java -version'
                 sh 'mvn --version'
@@ -34,7 +34,7 @@ pipeline {
                 timeout(time: 2, unit: "MINUTES")
             }
             steps {
-                echo "Running: Build"
+                echo "Stage: Build"
                 echo "Using some static version ${SOME_STATIC_VERSION}"
                 echo "Using param1 = ${params.param1}"
             }
@@ -46,7 +46,7 @@ pipeline {
                 }
             }
             steps {
-                echo "Running: Test"
+                echo "Stage: Test"
                 /* `make check` returns non-zero on test failures,
                 * using `true` to allow the Pipeline to continue nonetheless
                 */
@@ -54,9 +54,15 @@ pipeline {
                 junit(allowEmptyResults: true, testResults: '**/target/*.xml')
             }
         }
+        stage("Test Manager") {
+            steps {
+                echo "Stage: Test Manager"
+                sh './start_app.sh tm-config.json'
+            }
+        }
         stage("Deploy") {
             steps {
-                echo "Running: Deploy"
+                echo "Stage: Deploy"
                 echo "Deploying version: ${params.version}"
 
                 echo "creds: ${USER_CREDS}"
@@ -64,14 +70,14 @@ pipeline {
                     usernamePassword(credentialsId: 'juser-creds', usernameVariable: 'USER', passwordVariable: 'PASS')
                 ]) {
                     sh 'echo creds: ${USER} ${PASS}'
-                    sh('curl -u $USER_CREDS_USR:$USER_CREDS_PSW http://localhost:8080/hello')
+                    sh 'curl -u $USER_CREDS_USR:$USER_CREDS_PSW http://localhost:8080/hello'
                 }
                 // sh 'make publish'
             }
         }
         stage("Cleanup") {
             steps {
-                echo "Running: Cleanup"
+                echo "Stage: Cleanup"
                 deleteDir()
             }
         }
