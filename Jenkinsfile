@@ -31,7 +31,7 @@ pipeline {
                 }
             }
             options {
-                timeout(time: 2, unit: "MINUTES")
+                timeout(time: 2, unit: 'MINUTES')
             }
             steps {
                 echo "Stage: Build"
@@ -56,7 +56,7 @@ pipeline {
         }
         stage("Test Manager") {
             options {
-                timeout(time: 5, unit: "MINUTES")
+                timeout(time: 2, unit: 'MINUTES')
             }
             steps {
                 echo "Stage: Test Manager"
