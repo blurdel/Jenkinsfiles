@@ -37,7 +37,7 @@ pipeline {
                 echo "Stage: Build"
                 echo "Using some static version ${SOME_STATIC_VERSION}"
                 echo "Using param1 = ${params.param1}"
-		sh 'mvn clean verify -DskipTests'
+                // sh 'mvn clean verify -DskipTests'
             }
         }
         stage("Test") {
