@@ -51,8 +51,8 @@ pipeline {
                 /* `make check` returns non-zero on test failures,
                 * using `true` to allow the Pipeline to continue nonetheless
                 */
-                sh 'mvn test || true' 
-                junit(allowEmptyResults: false, testResults: '**/target/*.xml')
+                //sh 'mvn test || true' 
+                //junit(allowEmptyResults: false, testResults: '**/target/*.xml')
             }
         }
         stage("Test Manager") {
