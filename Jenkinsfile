@@ -55,6 +55,9 @@ pipeline {
             }
         }
         stage("Test Manager") {
+            options {
+                timeout(time: 5, unit: "MINUTES")
+            }
             steps {
                 echo "Stage: Test Manager"
                 sh './start_app.sh tm-config.json'

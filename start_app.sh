@@ -24,6 +24,6 @@ function countDown {
 
 
 echo "Doing Stuff..." >> ${LOG}
-countDown 6
+countDown 10
 
 echo "Done."
