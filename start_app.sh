@@ -12,18 +12,17 @@ if [ $# -ne 1 ]; then
 fi
 
 function countDown {
-  COUNT=${1:-10}
-#  echo "$COUNT"
+  local COUNT=${1:-10}
   while (( COUNT > 0 )) ; do
     echo -e "$COUNT \c"
     (( COUNT-- ))
     sleep 1
   done
-  echo
+  echo # Add a newline
 }
 
 
-echo "Doing Stuff..." >> ${LOG}
+echo "Doing Stuff..."
 countDown 10
 
 echo "Done."
