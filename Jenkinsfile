@@ -28,6 +28,7 @@ pipeline {
                         echo "Stage: Build B"
                         //build(job: '/CppCICD', parameters: [booleanParam(name: 'RunTestManager', value: false)], wait: true)
 			//build(job: '/CppCICD/master', wait: true)
+			build(job: '/tm/master', wait: true)
                     }
                 }
             }
