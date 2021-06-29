@@ -20,7 +20,7 @@ pipeline {
                 stage('Build A') {
                     steps {
                         echo "Stage: Build A"
-                        build(job: '/CICDemo/master', wait: true)
+                        // build(job: '/CICDemo/master', wait: true)
                     }
                 }
                 stage('Build B') {
