@@ -2,6 +2,7 @@ pipeline {
     agent any
     
 	options {
+		timestamps() // Add timestamps to logging
         buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
     }
 	
