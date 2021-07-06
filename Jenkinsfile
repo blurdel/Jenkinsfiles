@@ -20,7 +20,7 @@ pipeline {
         }
         stage("Build A nd B") {
             failFast true
-            parallel (
+			parallel {
                 stage('Build A') {
                     steps {
                         echo "Stage: Build A"
@@ -34,7 +34,7 @@ pipeline {
 						//build(job: '/CppCICD/master', wait: true)
                     }
                 }
-            )
+			}
         }
         stage("Cleanup") {
             steps {
