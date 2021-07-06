@@ -24,7 +24,7 @@ pipeline {
                 stage('Build A') {
                     steps {
                         echo "Stage: Build A"
-                        // build(job: '/CICDemo/master', wait: true)
+						build(job: '/Jenkinsfiles/sleep-job', wait: false)
                     }
                 }
                 stage('Build B') {
