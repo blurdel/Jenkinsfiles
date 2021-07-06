@@ -30,7 +30,7 @@ pipeline {
                 stage('Build B') {
                     steps {
                         echo "Stage: Build B"
-                        //build(job: '/CppCICD', parameters: [booleanParam(name: 'RunTestManager', value: false)], wait: false)
+                        build(job: '/CppCICD/master', parameters: [booleanParam(name: 'RunTestManager', value: false)], wait: false)
                     }
                 }
 			}
