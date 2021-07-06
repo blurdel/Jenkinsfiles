@@ -1,4 +1,6 @@
 pipeline {
+    agent any
+    
     environment {
         // Set parameters for jobs
         test = "groovy"
@@ -11,7 +13,8 @@ pipeline {
         stage ("Stage 1") {
             steps {
                 echo "$test"
-                echo "$testbed"            }
+                echo "$testbed"
+            }
         }
     }
 }
