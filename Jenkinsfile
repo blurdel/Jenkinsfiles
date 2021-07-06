@@ -4,14 +4,14 @@ pipeline {
         test = "groovy"
         testbed = "my testbed"
     }
-    agent {
-        label $testbed
-    }
+    //agent {
+    //    label $testbed
+    //}
     stages {
         stage ("Stage 1") {
             steps {
                 echo "$test"
-            }
+                echo "$testbed"            }
         }
     }
 }
