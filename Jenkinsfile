@@ -21,7 +21,7 @@ pipeline {
         stage("Run Job") {
             steps {
                 echo "Stage: Run Job"
-                build(job: '/CppCICD', parameters: [booleanParam(name: 'RunTestManager', value: false)], wait: false)
+                build(job: '/CppCICD/master', parameters: [booleanParam(name: 'RunTestManager', value: false)], wait: false)
             }
         }
         stage("Cleanup") {
