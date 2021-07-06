@@ -14,8 +14,8 @@ pipeline {
             steps {
                 echo "Stage: Init"
                 echo "branch=${env.BRANCH_NAME}"
-                sh 'java -version'
-                sh 'mvn --version'
+                //sh 'java -version'
+                //sh 'mvn --version'
             }
         }
         stage("Build A nd B") {
@@ -26,7 +26,7 @@ pipeline {
                         echo "Stage: Build A"
                         // build(job: '/CICDemo/master', wait: true)
                     }
-                },
+                }
                 stage('Build B') {
                     steps {
                         echo "Stage: Build B"
