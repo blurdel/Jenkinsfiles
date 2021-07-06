@@ -18,10 +18,10 @@ pipeline {
                 //sh 'mvn --version'
             }
         }
-        stage("Run Job") {
+        stage("Sleep") {
             steps {
-                echo "Stage: Run Job"
-                build(job: '/CppCICD/master', parameters: [booleanParam(name: 'RunTestManager', value: false)], wait: false)
+                echo "Stage: Sleep"
+                sleep(time: 30, unit: 'SECONDS')
             }
         }
         stage("Cleanup") {
