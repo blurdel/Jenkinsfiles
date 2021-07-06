@@ -18,23 +18,11 @@ pipeline {
                 //sh 'mvn --version'
             }
         }
-        stage("Build A nd B") {
-            failFast true
-			parallel {
-                stage('Build A') {
-                    steps {
-                        echo "Stage: Build A"
-                        // build(job: '/CICDemo/master', wait: true)
-                    }
-                }
-                stage('Build B') {
-                    steps {
-                        echo "Stage: Build B"
-                        build(job: '/CppCICD', parameters: [booleanParam(name: 'RunTestManager', value: false)], wait: false)
-						//build(job: '/CppCICD/master', wait: true)
-                    }
-                }
-			}
+        stage("Run Job") {
+            steps {
+                echo "Stage: Run Job"
+                build(job: '/CppCICD', parameters: [booleanParam(name: 'RunTestManager', value: false)], wait: false)
+            }
         }
         stage("Cleanup") {
             steps {
