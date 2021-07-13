@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    
+// https://e.printstacktrace.blog/how-to-catch-curl-response-in-jenkins-pipeline/
+    
     stages {
 
         stage("Curl Test") {
