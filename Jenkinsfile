@@ -7,18 +7,26 @@ pipeline {
 
     stages {
 
-        stage("First") {
+        stage("Shell") {
             agent { label 'master' }
             steps {
                 sh "printenv | sort"
             }
         }
-/*
-        stage("Build") {
+
+        stage("Env Object") {
+            agent { label 'master' }
             steps {
-                echo "Stage: Build"
+                script {
+                    def fields = env.getEnvironment()
+                    fields.each {
+                        k, v -> println("${k} = ${v}");
+                    }
+                    println(env.PATH)
+                }
             }
         }
+/*
         stage("Test") {
             steps {
                 echo "Stage: Test"
