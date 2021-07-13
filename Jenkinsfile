@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         color = "blue"
+        first_path = getFirst()
     }
 
     stages {
@@ -39,20 +40,20 @@ pipeline {
                 sh 'echo "JPATH=${JPATH}"'
             }
         }
-/*
-        stage("Test Manager") {
+        stage("Function") {
+            agent { label 'master' }
             steps {
-                echo "Stage: Test Manager"
-                sh './start_app.sh tm-config.json'
+                echo "Stage: Function"
+                print(env.first_path)                
             }
         }
-        stage("Cleanup") {
-            steps {
-                echo "Stage: Cleanup"
-                deleteDir()
-            }
-        }
-*/
+
     }
 
+}
+
+def getFirst() {
+    node('master') {
+        return env.PATH.split(':')[0]
+    }
 }
