@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    
+
     environment {
         SOME_STATIC_VERSION = "0.0.1"
         USER_CREDS = credentials('juser-creds')
@@ -51,7 +51,7 @@ pipeline {
                 /* `make check` returns non-zero on test failures,
                 * using `true` to allow the Pipeline to continue nonetheless
                 */
-                //sh 'mvn test || true' 
+                //sh 'mvn test || true'
                 //junit(allowEmptyResults: false, testResults: '**/target/*.xml')
             }
         }
@@ -89,13 +89,13 @@ pipeline {
     }
     post {
         always {
-            echo "Running post/always"
+            echo "post/always"
         }
         success {
-            echo "Running post/success"
+            echo "post/success"
         }
         failure {
-            echo "Running post/failure"
+            echo "post/failure"
         }
     }
 }
