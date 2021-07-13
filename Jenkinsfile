@@ -1,6 +1,8 @@
 pipeline {
     agent none
 
+    // https://code-maven.com/jenkins-pipeline-environment-variables
+
     environment {
         color = "blue"
         first_path = getFirst()
