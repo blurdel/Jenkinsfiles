@@ -1,3 +1,5 @@
+def gv // use groovy scripts
+
 pipeline {
     agent any
     
@@ -22,6 +24,9 @@ pipeline {
                 echo "branch=${env.BRANCH_NAME}, param1=${params.param1}, version=${params.version}, unitTests=${params.unitTests}"
                 sh 'java -version'
                 sh 'mvn --version'
+                script {
+                    gv = load "funcs.groovy"
+                }
             }
         }
         stage("Build") {
@@ -36,6 +41,9 @@ pipeline {
             }
             steps {
                 echo "Running: Build"
+                script {
+                    gv.echoBuild()
+                }
                 echo "Using some static version ${SOME_STATIC_VERSION}"
                 echo "Using param1 = ${params.param1}"
             }
