@@ -56,6 +56,9 @@ pipeline {
             }
             steps {
                 echo "Running: Test"
+                script {
+                    gv.echoTest()
+                }
                 /* `make check` returns non-zero on test failures,
                 * using `true` to allow the Pipeline to continue nonetheless
                 */
@@ -67,6 +70,9 @@ pipeline {
             steps {
                 echo "Running: Deploy"
                 echo "Deploying version: ${params.version}"
+                script {
+                    gv.echoDeploy()
+                }
 
                 echo "creds: ${USER_CREDS}"
                 withCredentials ([
@@ -81,6 +87,9 @@ pipeline {
         stage("Cleanup") {
             steps {
                 echo "Running: Cleanup"
+                script {
+                    gv.echoClean()
+                }
                 deleteDir()
             }
         }
