@@ -1,20 +1,27 @@
+def map = [
+    Stage1: A,
+    Stage2: B,
+    Stage3: C
+]
+
+
 pipeline {
     agent any
-    
-    environment {
-        // Set parameters for jobs
-        test = "groovy"
-        testbed = "my testbed"
-    }
-    //agent {
-    //    label $testbed
-    //}
+            
     stages {
-        stage ("Stage 1") {
+
+        stage ("Init") {
             steps {
-                echo "$test"
-                echo "$testbed"
+                echo "Stage: Init"
+                loopNames(map)                
             }
         }
+
     }
+}
+
+def loopNames(map) {
+    map.each {
+        k, v -> println k + " -> " + v
+    }    
 }
