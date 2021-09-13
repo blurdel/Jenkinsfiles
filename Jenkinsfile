@@ -1,5 +1,5 @@
 def map = [
-    Stage1: A,
+    Bob: 42,
     Stage2: B,
     Stage3: C
 ]
