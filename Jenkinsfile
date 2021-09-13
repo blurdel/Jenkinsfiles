@@ -1,7 +1,7 @@
 def map = [
-    Bob: 42,
-    Stage2: B,
-    Stage3: C
+    Bob  : 42,
+    Alice: 54,
+    Max  : 33
 ]
 
 
