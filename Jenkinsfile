@@ -6,18 +6,20 @@ def map = [
 
 
 pipeline {
-    agent none
+    agent any
             
     stages {
 
-        map.each { entry ->
-            stage($entry.key) {
-                steps {
-                    timestamps {
-                        echo "$entry.value"
+        stage('Init') {
+            steps {
+                map.entry { ->
+                    stage(entry.key) {
+                        timestamps {
+                            echo "$entry.value"
+                        }
                     }
                 }
-            }        
+            }
         }
         
     }
