@@ -12,7 +12,7 @@ pipeline {
 
         stage('Init') {
             steps {
-                script {}
+                script {
                     map.entry { ->
                         stage(entry.key) {
                             timestamps {
