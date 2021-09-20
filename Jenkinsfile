@@ -13,7 +13,7 @@ pipeline {
         stage('Init') {
             steps {
                 script {
-                    map.entry { ->
+                    map.each { ->
                         stage(entry.key) {
                             timestamps {
                                 echo "$entry.value"
