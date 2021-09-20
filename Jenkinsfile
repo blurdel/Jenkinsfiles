@@ -12,10 +12,12 @@ pipeline {
 
         stage('Init') {
             steps {
-                map.entry { ->
-                    stage(entry.key) {
-                        timestamps {
-                            echo "$entry.value"
+                script {}
+                    map.entry { ->
+                        stage(entry.key) {
+                            timestamps {
+                                echo "$entry.value"
+                            }
                         }
                     }
                 }
