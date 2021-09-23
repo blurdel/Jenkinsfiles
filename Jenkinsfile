@@ -2,7 +2,7 @@ pipeline {
     agent any
     
 	options {
-		timestamps() // Add timestamps to logging
+        timestamps() // Add timestamps to logging
         buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
     }
 	
@@ -28,7 +28,6 @@ pipeline {
         stage("Cleanup") {
             steps {
                 echo "Stage: Cleanup"
-                deleteDir()
             }
         }
     }
