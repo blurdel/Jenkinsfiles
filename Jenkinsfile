@@ -1,14 +1,14 @@
 pipeline {
     agent any
     
-	options {
+    options {
         timestamps() // Add timestamps to logging
         buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
     }
 	
     tools {
-		maven 'mvn'
-	}
+        maven 'mvn'
+    }
 
     stages {
         stage("Init") {
