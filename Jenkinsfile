@@ -49,6 +49,14 @@ pipeline {
                 print(env.first_path)                
             }
         }
+        stage("Dir Size") {
+            agent { label 'master' }
+            steps {
+                scripts {
+                    DIR_SIZE = new File(".").directorySize()
+                }
+            }
+        }
 
     }
 
