@@ -1,29 +1,37 @@
-def map = [
-    Bob  : 42,
-    Alice: 54,
-    Max  : 33
-]
+def choiceArray = []
+def tcNameArray = []
 
+node {
+    checkout scm
+    def folders = sh(returnStdout: true, script: "ls $WORKSPACE")
+
+    folders.split().each {
+        // condition to skip files, if any
+        choiceArray << it
+    }
+
+    // Can read a file to get names
+    testcases = readFile("testcases.txt").split("\\r?\\n");
+    testcases.each { String tcname ->
+        echo "tcname: ${tcname}"
+        tcNameArray << tcname
+    }
+}
 
 pipeline {
     agent any
+
+    parameters {
+        choice(name: 'CHOICES', choices: choiceArray, description: "Please Select CHOICE")
+        choice(name: 'TCNAME', choices: tcNameArray, description: "Please Select Testcase")
+    }
             
     stages {
-
-        stage('Init') {
+        stage('debug') {
             steps {
-                script {
-                    map.each { entry ->
-                        stage(entry.key) {
-                            timestamps {
-                                echo "$entry.value"
-                            }
-                        }
-                    }
-                }
+                echo "Selected choices: ${params.CHOICES}, ${params.TCNAME}"
             }
         }
-        
     }
 
 }
