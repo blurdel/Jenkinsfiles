@@ -1,101 +1,102 @@
+def strSAMS = "SAM-T,SAM-S,SAM-D"
+def allSAMS = ['SAM-T', 'SAM-S', 'SAM-D']
+def tcStart = []
+def tcEnd = []
+
+def Greet(name) {
+    echo "Hello ${name}"
+}
+
+node {
+/*
+    echo "ALL SAMS:"
+    allSAMS.each { String name ->
+        echo "${name}"
+    }
+*/
+    for (int i = 1; i < 10; i++) {
+        tcStart << i
+    }
+    for (int i = 1; i < 10; i++) {
+        tcEnd << i
+    }
+}
+
+properties([
+    parameters([
+        [$class: 'ChoiceParameter',
+            choiceType: 'PT_MULTI_SELECT',
+            filterLength: 1,
+            filterable: false,
+            name: 'SAMS',
+            script: [
+                $class: 'GroovyScript',
+                fallbackScript: [
+                    classpath: [],
+                    sandbox: false,
+                    script:
+                        'return["Check Jenkins ScriptApproval page"]'
+                ],
+                script: [
+                    classpath: [],
+                    sandbox: false,
+                    script:
+                        'return["SAM-T:selected", "SAM-S", "SAM-D"]'
+                ]
+            ]
+        ]
+    ])
+])
+
 pipeline {
     agent any
 
-    environment {
-        SOME_STATIC_VERSION = "0.0.1"
-        USER_CREDS = credentials('juser-creds')
+    options {
+        timestamps()
+        timeout(time: 1, unit: 'MINUTES')
+        
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        disableConcurrentBuilds()    
     }
-    parameters {
-         string(name: 'param1', defaultValue: '', description: 'Enter any value for param1')
-         choice(name: 'version', choices: ['1.1.0', '1.2.0', '1.3.0'], description: 'Select the version for this build')
-         booleanParam(name: 'unitTests', defaultValue: true, description: 'Do you want to run Unit Tests?')
-    }
-    tools {
-		maven 'mvn'
-	}
 
     stages {
 
-        stage("Init") {
+        stage('Init') {
             steps {
-                echo "Stage: Init"
-                echo "branch=${env.BRANCH_NAME}, param1=${params.param1}, version=${params.version}, unitTests=${params.unitTests}"
-                sh 'java -version'
-                sh 'mvn --version'
+                echo 'Stage: Init'
+                echo "branch=${env.BRANCH_NAME}"
             }
         }
-        stage("Build") {
-            when {
-                expression {
-                    env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'main'
+        stage('Misc') {
+            steps {
+                echo 'Stage: Misc'
+                Greet('david')
+                script {
+                    try {
+                        // Fails with non-zero exit if dir1 does not exist
+                        def dir1 = sh(script: 'dir', returnStdout:true).trim()
+                    } catch (Exception ex) {
+                        println("Unable to read dir1: ${ex}")
+                    }
                 }
             }
-            options {
-                timeout(time: 2, unit: 'MINUTES')
-            }
+        }
+        stage('Active Choice') {
             steps {
-                echo "Stage: Build"
-                echo "Using some static version ${SOME_STATIC_VERSION}"
-                echo "Using param1 = ${params.param1}"
-                // sh 'mvn clean verify -DskipTests'
+                echo "SAMS=${params.SAMS}"
             }
         }
-        stage("Test") {
-            when {
-                expression {
-                    params.unitTests == true
-                }
-            }
-            steps {
-                echo "Stage: Test"
-                /* `make check` returns non-zero on test failures,
-                * using `true` to allow the Pipeline to continue nonetheless
-                */
-                //sh 'mvn test || true'
-                //junit(allowEmptyResults: false, testResults: '**/target/*.xml')
-            }
-        }
-        stage("Test Manager") {
-            options {
-                timeout(time: 2, unit: 'MINUTES')
-            }
-            steps {
-                echo "Stage: Test Manager"
-                sh './start_app.sh tm-config.json'
-            }
-        }
-        stage("Deploy") {
-            steps {
-                echo "Stage: Deploy"
-                echo "Deploying version: ${params.version}"
-
-                echo "creds: ${USER_CREDS}"
-                withCredentials ([
-                    usernamePassword(credentialsId: 'juser-creds', usernameVariable: 'USER', passwordVariable: 'PASS')
-                ]) {
-                    sh 'echo creds: ${USER} ${PASS}'
-                    sh 'curl -u $USER_CREDS_USR:$USER_CREDS_PSW http://localhost:8080/hello'
-                }
-                // sh 'make publish'
-            }
-        }
-        stage("Cleanup") {
-            steps {
-                echo "Stage: Cleanup"
-                deleteDir()
-            }
-        }
-
     }
     post {
         always {
             echo "post/always"
+            deleteDir() //clean workspace
         }
         success {
-            echo "post/success"
+            echo "post/success"            
         }
         failure {
-            echo "post/failure"
+            echo "post/failure"            
         }
     }
 }
